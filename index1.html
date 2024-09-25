@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reminder App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            margin-top: 15px;
+            display: block;
+            font-weight: bold;
+            color: #555;
+        }
+        select, input[type="time"], button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+        select:focus, input[type="time"]:focus {
+            border-color: #66afe9;
+            outline: none;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        button:active {
+            background-color: #1e7e34;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Set a Reminder</h1>
+        
+        <label for="day">Select Day:</label>
+        <select id="day">
+            <option value="">--Select Day--</option>
+            <option value="0">Sunday</option>
+            <option value="1">Monday</option>
+            <option value="2">Tuesday</option>
+            <option value="3">Wednesday</option>
+            <option value="4">Thursday</option>
+            <option value="5">Friday</option>
+            <option value="6">Saturday</option>
+        </select>
+
+        <label for="time">Select Time:</label>
+        <input type="time" id="time">
+
+        <label for="activity">Select Activity:</label>
+        <select id="activity">
+            <option value="">--Select Activity--</option>
+            <option value="Wake up">Wake up</option>
+            <option value="Go to gym">Go to gym</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Meetings">Meetings</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Quick nap">Quick nap</option>
+            <option value="Go to library">Go to library</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Go to sleep">Go to sleep</option>
+        </select>
+
+        <button id="setReminder">Set Reminder</button>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Reminder App. All rights reserved.</p>
+    </div>
+
+    <script>
+        document.getElementById('setReminder').addEventListener('click', function() {
+            const day = document.getElementById('day').value;
+            const time = document.getElementById('time').value;
+            const activity = document.getElementById('activity').value;
+
+            if (!day || !time || !activity) {
+                alert('Please select a day, time, and activity!');
+                return;
+            }
+
+            const [hour, minute] = time.split(':').map(Number);
+            const now = new Date();
+            let reminderDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute);
+
+            // Set reminder for next occurrence of the selected day
+            if (reminderDate.getDay() !== parseInt(day)) {
+                reminderDate.setDate(reminderDate.getDate() + ((parseInt(day) + 7 - reminderDate.getDay()) % 7));
+            }
+
+            const timeToReminder = reminderDate.getTime() - now.getTime();
+
+            if (timeToReminder < 0) {
+                alert('The selected time is in the past. Please select a future time.');
+                return;
+            }
+              setTimeout(() => {
+                alert(`Reminder:It's time to ${activity}!');
+            }, timeToReminder);
+
+            alert('Reminder set for ${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][day]} at ${time} to ${activity}');
+            });
+    </script>
+
+</body>
+</html>
